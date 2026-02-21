@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Archivo Encriptado</title>
+    <style>
+        body {
+            background-color: #000000;
+            color: #ffffff;
+            font-family: 'Courier New', Courier, monospace; /* Fuente tipo código */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        .content {
+            text-align: center;
+            padding: 20px;
+        }
+
+        /* Estilo del contador */
+        #countdown {
+            font-size: 3.5rem;
+            letter-spacing: 5px;
+            color: #333; /* Color tenue mientras corre el tiempo */
+            margin-bottom: 10px;
+        }
+
+        .label {
+            font-size: 0.7rem;
+            color: #222;
+            text-transform: uppercase;
+        }
+
+        /* Sección de la Pista (Oculta) */
+        #pista-container {
+            display: none;
+            animation: flicker 1.5s infinite alternate;
+        }
+
+        .titulo-pista {
+            font-size: 2.5rem;
+            color: #ff0000; /* Rojo para dar impacto */
+            margin-bottom: 20px;
+            letter-spacing: 10px;
+        }
+
+        .binario {
+            font-size: 1.1rem;
+            color: #00ff00; /* Verde tipo terminal clásica */
+            line-height: 1.6;
+            max-width: 600px;
+            word-break: break-all;
+        }
+
+        @keyframes flicker {
+            0% { opacity: 0.8; }
+            100% { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="content">
+        <div id="espera">
+            <div id="countdown">00:00:00:00</div>
+            <div class="label">Sincronizando Archivo...</div>
+        </div>
+
+        <div id="pista-container">
+            <div class="titulo-pista">PISTA</div>
+            <div class="binario">
+                01100010 01110101 01110011 01100011 01100001 00100000 01100101 01101110 00100000 01101100 01101111 00100000 01100101 01110011 01100011 01101111 01101110 01100100 01101001 01100100 01101111 00100000 01100100 01100101 00100000 01110100 01110101 00100000 00110010 00100000 01101000 01101111 01100111 01100001 01110010
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // FECHA OBJETIVO: 28 de febrero de 2026
+        const FECHA_LIMITE = new Date("February 28, 2026 00:00:00").getTime();
+
+        const timerLoop = setInterval(() => {
+            const ahora = new Date().getTime();
+            const faltante = FECHA_LIMITE - ahora;
+
+            if (faltante <= 0) {
+                clearInterval(timerLoop);
+                document.getElementById('espera').style.display = 'none';
+                document.getElementById('pista-container').style.display = 'block';
+                return;
+            }
+
+            const d = Math.floor(faltante / (1000 * 60 * 60 * 24));
+            const h = Math.floor((faltante % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const m = Math.floor((faltante % (1000 * 60 * 60)) / (1000 * 60));
+            const s = Math.floor((faltante % (1000 * 60)) / 1000);
+
+            const format = (n) => n < 10 ? "0" + n : n;
+            document.getElementById('countdown').innerText = `${format(d)}:${format(h)}:${format(m)}:${format(s)}`;
+            
+        }, 1000);
+    </script>
+</body>
+</html>
